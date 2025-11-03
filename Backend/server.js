@@ -51,7 +51,7 @@ async function connectToDatabase() {
   }
 }
 
-await connectToDatabase();
+connectToDatabase();
 
 export default app;
 
