@@ -20,15 +20,38 @@ app.use("/api", chatRoutes);
 //     console.log(`server running on ${PORT}`);
 // });
 
-const connectDB = async() => {
-    try {
-        await mongoose.connect(process.env.MONGODB_URI);
-        console.log("Connected with Database!");
-    } catch(err) {
-        console.log("Failed to connect with Db", err);
-    }
+const MONGO_URI = process.env.MONGODB_URI;
+
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
 }
-    connectDB();
+
+async function connectToDatabase() {
+  if (cached.conn) {
+    console.log("✅ Reusing existing MongoDB connection");
+    return cached.conn;
+  }
+
+  if (!cached.promise) {
+    cached.promise = await mongoose.connect(MONGO_URI, {
+      bufferCommands: false,
+      serverSelectionTimeoutMS: 15000,
+    });
+  } 
+
+  try {
+    cached.conn = await cached.promise;
+    console.log("✅ New MongoDB connection established");
+    return cached.conn;
+  } catch (err) {
+    console.error("❌ MongoDB connection error:", err);
+    throw err;
+  }
+}
+
+await connectToDatabase();
 
 export default app;
 
