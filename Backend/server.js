@@ -18,7 +18,6 @@ app.use("/api", chatRoutes);
 
 // app.listen(PORT, () => {
 //     console.log(`server running on ${PORT}`);
-//     connectDB();
 // });
 
 const connectDB = async() => {
@@ -29,6 +28,7 @@ const connectDB = async() => {
         console.log("Failed to connect with Db", err);
     }
 }
+    connectDB();
 
 export default app;
 
