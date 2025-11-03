@@ -10,12 +10,16 @@ const PORT = 8080;
 app.use(express.json());
 app.use(cors());
 
+app.get((req, res) => {
+    return res.json({name: "janisar"})
+})
+
 app.use("/api", chatRoutes);
 
-app.listen(PORT, () => {
-    console.log(`server running on ${PORT}`);
-    connectDB();
-});
+// app.listen(PORT, () => {
+//     console.log(`server running on ${PORT}`);
+//     connectDB();
+// });
 
 const connectDB = async() => {
     try {
@@ -25,6 +29,8 @@ const connectDB = async() => {
         console.log("Failed to connect with Db", err);
     }
 }
+
+export default app;
 
 
 // app.post("/test", async (req, res) => {
