@@ -10,7 +10,7 @@ const PORT = 8080;
 app.use(express.json());
 app.use(cors());
 
-app.get((req, res) => {
+app.get("/", (req, res) => {
     return res.json({name: "janisar"})
 })
 
